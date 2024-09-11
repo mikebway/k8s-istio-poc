@@ -1,0 +1,34 @@
+###############################
+# JavaScript / TypeScript
+node_modules
+
+# The control on whether npm install needs to be run
+npm.installed
+
+###############################
+# Go
+
+# Intermediate build artifacts
+*.test
+*.out
+handler
+service
+artifacts/
+
+###############################
+# IDE and Tools
+.idea/
+
+###############################
+# Miscellaneius
+
+# Dumb Mac files that turn up univited
+.DS_Store
+
+# Other possible binary artifacts for programs and plugins ###
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+Footer

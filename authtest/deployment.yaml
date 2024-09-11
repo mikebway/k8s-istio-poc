@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authtest
+  labels:
+    app: authtest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authtest
+  template:
+    metadata:
+      labels:
+        app: authtest
+    spec:
+      containers:
+        - name: authtest
+          image: authtest:v1
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "0.1"
+            limits:
+              memory: "128Mi"
+              cpu: "0.2"
