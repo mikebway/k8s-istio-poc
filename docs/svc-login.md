@@ -1,11 +1,15 @@
-# Build and Deploy authtest Service
+# Build and Deploy the `login` Service
 
-The `authtest` service is a simple echo webservice that responds with the URL path that was used to invoke it,
-the numb er of times it has been invoked, and a dump of the HTTP request headers.
+The `login` service is a trivially crude user "authentication" service that establishs and destroys a session cookie.
+
+The `\login` path accepts a `user=john-smith` query parameter and writes `john-smith` into a session cookie with
+the imaginative name of `session`.
+
+The `\logout` path destroys the session cookie if it is present.
 
 ## Prerequisites
 
-Building and deploying the `authtest` service assumes that you have already completed [installation and basic configuration](Install.md)
+Building and deploying the `login` service assumes that you have already completed [installation and basic configuration](Install.md)
 of the Minikube cluster.
 
 Minikube must have been started, which will be the case if you have just completed installation. If not, this should
@@ -18,12 +22,15 @@ minkube start
 
 ## Build and manage with `make`
 
-The easiest way to build, start and manage the `authtest` service is using `make`. Running `make` without any
+**IMPORTANT:** The following assumes that your current working directory is the [`k8s-istio-poc/login`](../login)
+directory.
+
+The easiest way to build, start and manage the `login` service is using `make`. Running `make` without any
 parameters will display the following usage help:
 
 ```text
 help           List of available commands
-build          Build the authtest Docker container
+build          Build the login Docker container
 deploy         Deploy the container as a pod/service in Kubernetes
 undeploy       Destroy the container deployment/pod/service in Kubernetes
 start          Start the service
@@ -40,7 +47,10 @@ make build
 makde deploy
 ```
 
-## Build and manage the ~~hard~~ expert way 
+## Build and manage the ~~hard~~ expert way
+
+**IMPORTANT:** The following assumes that your current working directory is the [`k8s-istio-poc/login`](../login)
+directory.
 
 In a terminal shell, run the following:
 
@@ -50,7 +60,7 @@ In a terminal shell, run the following:
 eval $(minikube docker-env)
 
 # Build the docker container image
-docker build -t authtest:v1 .
+docker build -t login:v1 .
 
 # Create the Minikube application deployment
 kubectl create -f deployment.yaml
@@ -65,13 +75,19 @@ kubectl apply -f service.yaml
 Either create a tunnel to the service and open a browser to it in one step with:
 
 ```shell
-minikube service hello-minikube
+minikube service login
 ```
 
-Or, use `kubectl` to forward the service port and then open a browser on http://localhost:7080
+This will open a browser and show a 404 error. Add `/login` or `/logout` to the URL to get a 200 response.
+
+Or, use `kubectl` to forward the service port and then open a browser on http://localhost:9080/login
 
 ```shell
-kubectl port-forward service/hello-minikube 7080:8080
+kubectl port-forward service/login 9080:8080
 ```
 
 On a Mac, both approaches will lock up your terminal shell until you Ctrl-C to shutdown the tunnel.
+
+**NOTE:** The service will not be useful in this state beyond sending you to an unreachable `/dashboard` URL. You 
+will need to complete the Istio ingress gateway configuration before you get to see any of the services fully function
+as intended.

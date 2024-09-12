@@ -11,5 +11,6 @@
 ```
 
 1. [Installation and basic configuration](Install.md)
-2. [Build and deploy authtest service](authtest.md)
+2. [Build and deploy the authtest service](svc-authtest)
+3. [Build and deploy the login service](svc-login.md)
 
