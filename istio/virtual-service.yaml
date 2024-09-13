@@ -10,6 +10,15 @@ spec:
   gateways:
     - istio-system/authtest-gateway
   http:
+    - name: "authentication"
+      match:
+        - uri:
+            exact: "/login"
+        - uri:
+            exact: "/logout"
+      route:
+        - destination:
+            host: login
     - route:
         - destination:
             host: authtest

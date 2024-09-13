@@ -57,7 +57,7 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 		http.SetCookie(w, cookie)
 
 		// Redirect to the dashboard URL without making assumptions about our domain name
-		redirectUrl := "http://localhost:10000/dashboard"
+		redirectUrl := "http://localhost/dashboard"
 		log.Printf("redirecting to %s\n", redirectUrl)
 		http.Redirect(w, r, redirectUrl, http.StatusFound)
 	}
