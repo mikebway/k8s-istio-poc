@@ -1,4 +1,4 @@
-# Configuring the Istio Service Mesh and Ingres
+# Configuring Istio ingress
 
 ## Install the Minikube Istio addon
 
@@ -39,8 +39,19 @@ kubectl apply -f istio/gateway.yaml
 kubectl apply -f istio/virtual-service.yaml
 ```
 
+## Open a tunnel to the cluster
 
-## To remove Istio
+The ingress gateway on the cluster is now listening, but we still need to be able to connect from localhost to it.
+We achieve that by having Minikube run a TCP tunnel:
+
+```shell
+# Open a tunnel to the cluster network
+minikube tunnel
+```
+
+## To shut Istio down
+
+Kill (Ctrl-C) the `minikube tunnel` process and then:
 
 ```shell
 # Disable Istio

@@ -2,7 +2,8 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: authtest
+  name: authtest-gateway
+  namespace: istio-system
 spec:
   selector:
     app: istio-ingressgateway

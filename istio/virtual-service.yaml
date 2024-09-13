@@ -2,12 +2,13 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: authtest-ingress
+  name: vs-authtest
+  namespace: authtest
 spec:
   hosts:
     - '*'
   gateways:
-    - authtest
+    - istio-system/authtest-gateway
   http:
     - route:
         - destination:
