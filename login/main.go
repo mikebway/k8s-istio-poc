@@ -80,7 +80,7 @@ func handleLogout(w http.ResponseWriter, r *http.Request) {
 		// We have a session cookie, instruct the browser to remove it by setting its maximum age to 0
 		user := cookie.Value
 		cookie := buildSessionCookie("")
-		cookie.MaxAge = 0
+		cookie.Expires = time.Date(1970, 0, 0, 0, 0, 0, 0, time.UTC)
 		http.SetCookie(w, cookie)
 		msg := fmt.Sprintf("user %s has been logged out\n", user)
 		log.Print(msg)
