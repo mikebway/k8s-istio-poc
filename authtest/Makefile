@@ -10,20 +10,22 @@ build: ## Build the authtest Docker container
 .PHONY: deploy
 deploy: ## Deploy the container as a pod/service in Kubernetes
 	eval $(minikube docker-env) &\
-	kubectl create -f deployment.yaml &\
-	kubectl apply -f service.yaml
+	kubectl apply -f namespace.yaml &\
+	kubectl create -f deployment.yaml --namespace authtest &\
+	kubectl apply -f service.yaml --namespace authtest
 
 .PHONY: undeploy
-undeploy: ## Destroy the container deployment/pod/service in Kubernetes
-	kubectl delete -f deployment.yaml
+undeploy: ## Destroy the deployment/pod/service in Kubernetes
+	kubectl delete -f service.yaml --namespace authtest &\
+	kubectl delete -f deployment.yaml --namespace authtest
 
 .PHONY: start
 start: ## Start the service
-	kubectl scale --replicas=1 -f deployment.yaml
+	kubectl scale --replicas=1 -f deployment.yaml --namespace authtest
 
 .PHONY: stop
 stop: ## Stop the service
-	kubectl scale --replicas=0 -f deployment.yaml
+	kubectl scale --replicas=0 -f deployment.yaml --namespace authtest
 
 
 

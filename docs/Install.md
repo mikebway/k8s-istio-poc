@@ -1,5 +1,9 @@
 # Install and Configure Docker, Colima, and Minikube
 
+**IMPORTANT:** While it does not matter for running `brew` installations, etc., some of the following shell commands 
+assume that your working directory is the `k8s-istio-poc` project root directory where they reference YAML file 
+paths.
+
 ## Installation
 
 1. Install Colima and Docker via Brew
@@ -57,6 +61,7 @@ If that comes up blank, Docker will not use the Minikube store. If it comes up `
 ## Confirm basic operation
 
 1. Open the Kubernetes dashboard in a browser
+   **IMPORTANT:** Run this in a separate shell window as it will b;ock while the dashboard is running.  
    ```shell
    minikube dashboard
    ```
@@ -77,7 +82,9 @@ If that comes up blank, Docker will not use the Minikube store. If it comes up `
    kubectl port-forward service/hello-minikube 7080:8080
    ```
 
-## Stopping and/or deleting a deployment
+## Stopping and/or deleting the test deployment
+
+We don't need the `hello-minikube` service anymore so lets get rid of it ...
 
 * Stopping
   ```shell
@@ -89,7 +96,7 @@ If that comes up blank, Docker will not use the Minikube store. If it comes up `
   kubectl delete deployment hello-minikube
   ```
   ```
-  
+
 
 
 
