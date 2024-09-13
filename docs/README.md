@@ -95,3 +95,23 @@ After completing installation and configurationyou should be able to:
    ```
 6. Returning to any non `/login` or `/logout` path will again display the [authtest](../authtest)
    response but with the session cookie removed or at least emptied (the behavior depends on the browser type used).
+
+## Suspending Minikube
+
+You can stop Minikube and Colima to get your memory and CPU back at any time by killing any `minikube dashboard` and
+`minikube tunnel` shell commands that you have running with Ctrl-C and then execute the following:
+
+```shell
+minikube stop
+
+colima stop
+```
+
+The next time you start Minikube, the services that you deployed will be brought back to life; you do not
+have to go through the installation and deployment steps again. For example:
+
+```shell
+colima start -c6 -m16 
+
+minikube start
+```
