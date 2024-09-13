@@ -23,7 +23,7 @@ This is clearly not a secure pattern; do not use it for anything more than demon
 1. [Minikube installation and basic configuration](Install.md)
 2. [Build and deploy the authtest service](svc-authtest)
 3. [Build and deploy the login service](svc-login.md)
-4. [Configuring Istio ingress](istio.md)
+4. [Configure Istio ingress](istio.md)
 
 ## Testing
 
@@ -94,4 +94,4 @@ After completing installation and configurationyou should be able to:
    user micky-mouse has been logged out
    ```
 6. Returning to any non `/login` or `/logout` path will again display the [authtest](../authtest)
-   response but with the session cookie removed.
+   response but with the session cookie removed or at least emptied (the behavior depends on the browser type used).
