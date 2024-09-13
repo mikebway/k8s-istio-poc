@@ -1,15 +1,5 @@
 # Running Istio on Minikube locally
 
-```diff
-- UNDER CONSTRUCTION
--
-- This project is incomplete and may never be completed!!   
--
-- Currently incomplete:
--    * Istio is not yet configured
--    * Only one service is built and deployed 
-```
-
 ## Objective
 
 Demonstrate how Istio can be deployed on top of Minikube to manage path routing for a trivial two
