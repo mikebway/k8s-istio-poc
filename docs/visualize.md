@@ -42,3 +42,7 @@ the [`authtest`](../authtest) and [`login`](../login) services:
 
 Then look at the various traffic graphs that you can explore from here: http://localhost:20001/kiali/console/graph/namespaces
 
+If nothing shows up, make sure that you **Select all** check in the Namespace dropdown.
+
+![Kiali service mesh visualization](kiali.png)
+
