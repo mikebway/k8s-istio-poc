@@ -8,6 +8,10 @@ service web application.
 Login and logout is crudely illustrated by the creation and removal of a session cookie containing the username.
 This is clearly not a secure pattern; do not use it for anything more than demonstration purposes.
 
+**NOTE:** While it would be possible to perform much if not all of the Kubernetes and Istio configuration with just one
+or two manifest YAML files, this project takes an incremental approach of building up the cluster one Lego brick at a 
+time with smaller, single purpose YAML files and single `kubectl`/`istionct` commands rather than scripts. 
+
 ## Installation and configuration
 
 1. [Minikube installation and basic configuration](Install.md)
