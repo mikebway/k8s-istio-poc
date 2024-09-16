@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: extauth
+  labels:
+    app: extauth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: extauth
+  template:
+    metadata:
+      labels:
+        app: extauth
+    spec:
+      containers:
+        - name: extauth
+          image: extauth:v1
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 50051
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "0.1"
+            limits:
+              memory: "128Mi"
+              cpu: "0.2"

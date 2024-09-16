@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: extauth
+  labels:
+    app: extauth
+spec:
+  ports:
+    - port: 50051
+      protocol: TCP
+  selector:
+    app: extauth
+  type: ClusterIP

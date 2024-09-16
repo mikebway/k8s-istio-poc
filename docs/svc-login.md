@@ -73,7 +73,7 @@ eval $(minikube docker-env)
 docker build -t login:v1 .
 
 # Create the authtest namespace if it does not already exist
-kubectl apply -f namespace.yaml
+kubectl apply -f ../authtest/namespace.yaml
 
 # Create the Minikube application deployment in the 
 # authtest namespace 
