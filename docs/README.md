@@ -14,6 +14,8 @@ This is clearly not a secure pattern; do not use it for anything more than demon
 2. [Build and deploy the authtest service](svc-authtest)
 3. [Build and deploy the login service](svc-login.md)
 4. [Configure Istio ingress](istio.md)
+5. [Configure Istio service mesh](mesh.md)
+6. [Configure Istio visualization](visualize.md)
 
 ## Testing
 
