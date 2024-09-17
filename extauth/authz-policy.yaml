@@ -1,0 +1,18 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: ingress-policy
+  namespace: istio-system
+spec:
+  selector:
+    matchLabels:
+      app: istio-ingressgateway
+  action: DENY
+  rules:
+    - to:
+      - operation:
+          methods: [ "GET" ]
+          paths: [ "/block*" ]
+      - operation:
+          methods: [ "GET" ]
+          paths: [ "/naff*" ]

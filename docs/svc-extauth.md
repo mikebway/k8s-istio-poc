@@ -30,7 +30,7 @@ directory.
 The easiest way to build, start and manage the `login` service is using `make`. Running `make` without any
 parameters will display the following usage help:
 
-```text
+```textating 
 help           List of available commands
 build          Build the login Docker container
 deploy         Deploy the container as a pod/service in Kubernetes

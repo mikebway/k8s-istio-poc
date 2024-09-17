@@ -12,6 +12,9 @@ This is clearly not a secure pattern; do not use it for anything more than demon
 or two manifest YAML files, this project takes an incremental approach of building up the cluster one Lego brick at a 
 time with smaller, single purpose YAML files and single `kubectl`/`istionct` commands rather than scripts. 
 
+If it looks like this project was assembled brick-by-brick, that's because it's true; learning how
+to configure Kubernetes and Istio was achieved one small step at a time.
+
 ## Installation and configuration
 
 1. [Minikube installation and basic configuration](Install.md)
@@ -20,6 +23,8 @@ time with smaller, single purpose YAML files and single `kubectl`/`istionct` com
 4. [Configure Istio ingress](istio.md)
 5. [Configure Istio service mesh](mesh.md)
 6. [Configure Istio visualization](visualize.md)
+7. [Build and deploy the ingress authorization filter](svc-extauth.md)
+8. [Configure the ingress authorization policy](authz-policy.md)
 
 ## Testing
 
