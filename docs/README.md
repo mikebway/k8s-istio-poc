@@ -144,4 +144,7 @@ have to go through the installation and deployment steps again. For example:
 colima start -c6 -m12 
 
 minikube start
+
+# Don't forget to start the tunnel back up as well!
+minikube tunnel
 ```
