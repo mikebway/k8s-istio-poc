@@ -103,7 +103,7 @@ After completing installation and configuration through step 6 you should be abl
 
 ## Testing with the authorization filter
 
-If the installation and configuration is completed through stages 7 and 8, then two addition headers will be found in 
+If the installation and configuration is completed through stages 7 and 8, then two additional headers will be found in 
 the http://localhost/whatever echo text: This shall contain a JWT as a bearer token. If the JWT is pasted into 
 
 * `X-Extauth-Was-Her` containing the text `blah, blah, blah`
