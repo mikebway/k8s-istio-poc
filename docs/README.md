@@ -13,7 +13,7 @@ This is clearly not a secure pattern; do not use it for anything more than demon
 
 **NOTE:** While it would be possible to perform much if not all of the Kubernetes and Istio configuration with just one
 or two manifest YAML files, this project takes an incremental approach of building up the cluster one Lego brick at a 
-time with smaller, single purpose YAML files and single `kubectl`/`istionct` commands rather than scripts. 
+time with smaller, single purpose YAML files and single `kubectl`/`istioctl` commands rather than scripts. 
 
 If it looks like this project was assembled brick-by-brick, that's because it's true; learning how
 to configure Kubernetes and Istio was achieved one small step at a time.
