@@ -5,7 +5,7 @@ all requests assessed and modified by the [external authorization filter]() that
 [`extauth`](../extauth) directory. 
 
 This is a achieved by configuring the ingress gateway with an [Authorization Policy](https://istio.io/latest/docs/reference/config/security/authorization-policy/).
-Specifically, this one: [../extauth/authz-policy.yaml](../extauth/authz-policy.yaml). The policy needs to reference the
+Specifically, this one: [../istio/authz-policy.yaml](../istio/authz-policy.yaml). The policy needs to reference the
 [`extauth`](../extauth) service as an "extension provider." The extension provider must first be declared in the 
 configuration map for the `istio-system` namespace.
 
@@ -77,7 +77,7 @@ shown above, that would be immediately above the `rootNamespace: istio-system` l
 ```text
     - name: ext-authz-grpc
       envoyExtAuthzGrpc:
-        service: extauth.istio-system.svc.cluster.local
+        service: extauth.default.svc.cluster.local
         port: 50051
 ```
 
@@ -92,16 +92,16 @@ kubectl get configmap istio -n istio-system -o yaml
 
 ## Set `CUSTOM` authorization policy to reference the `extauth` extension 
 
-To apply the [authz-policy.yaml](../extauth/authz-policy.yaml), run the following from the project root directory:
+To apply the [authz-policy.yaml](../istio/authz-policy.yaml), run the following from the project root directory:
 
 ```shell
-kubectl apply -f extauth/authz-policy.yaml
+kubectl apply -f istio/authz-policy.yaml
 ```
 
 If you need to roll that back, you can do so with:
 
 ```shell
-kubectl delete -f extauth/authz-policy.yaml
+kubectl delete -f istio/authz-policy.yaml
 ```
 
 ## Viewing the access logs

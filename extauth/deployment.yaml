@@ -20,6 +20,7 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 50051
+              name: grpc
           resources:
             requests:
               memory: "64Mi"

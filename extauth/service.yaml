@@ -6,7 +6,8 @@ metadata:
     app: extauth
 spec:
   ports:
-    - port: 50051
+    - name: grpc
+      port: 50051
       protocol: TCP
   selector:
     app: extauth

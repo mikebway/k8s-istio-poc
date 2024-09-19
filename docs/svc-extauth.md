@@ -13,8 +13,10 @@ a signed JWT that wraps the username found in the session cookie.
 ## `ClusterIP` service type
 
 The [`service.yaml`](../login/service.yaml) file defines the type of this service as being `ClusterIP`; it will not be accessible outside
-of the Kubernetes cluster. Moreover, it is deployed to the `istio-system` namespace, i.e., alongside the ingress
-gateway and the other Istio pods. It is only intended for use by the ingress gateway and not from any other service.
+of the Kubernetes cluster. 
+
+It is deployed to the `defualt` namespace, i.e., outside the domain specific namespace of the `authtest` application.
+It is only intended for use by the ingress gateway and not from any other service.
 
 
 ## Prerequisites
@@ -66,9 +68,9 @@ docker build -t extauth:v1 .
 
 # Create the Minikube application deployment in the 
 # authtest namespace 
-kubectl create -f deployment.yaml --namespace istio-system
+kubectl create -f deployment.yaml
 
 # Expose the application as a ClusterIP service that cannot be accessed from
 # outside the cluster
-kubectl apply -f service.yaml --namespace istio-system
+kubectl apply -f service.yaml
 ```

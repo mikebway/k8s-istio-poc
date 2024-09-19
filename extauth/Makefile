@@ -10,20 +10,20 @@ build: ## Build the extauth Docker container
 .PHONY: deploy
 deploy: ## Deploy the container as a pod/service in Kubernetes
 	eval $(minikube docker-env) &\
-	kubectl create -f deployment.yaml --namespace istio-system &\
-	kubectl apply -f service.yaml --namespace istio-system
+	kubectl create -f deployment.yaml &\
+	kubectl apply -f service.yaml
 
 .PHONY: undeploy
 undeploy: ## Destroy the deployment/pod/service in Kubernetes
-	kubectl delete -f service.yaml --namespace istio-system &\
-	kubectl delete -f deployment.yaml --namespace istio-system
+	kubectl delete -f service.yaml &\
+	kubectl delete -f deployment.yaml
 
 .PHONY: start
 start: ## Start the service
-	kubectl scale --replicas=1 -f deployment.yaml --namespace istio-system
+	kubectl scale --replicas=1 -f deployment.yaml
 
 .PHONY: stop
 stop: ## Stop the service
-	kubectl scale --replicas=0 -f deployment.yaml --namespace istio-system
+	kubectl scale --replicas=0 -f deployment.yaml
 
 
