@@ -110,6 +110,35 @@ This will be especially useful if the external authorization filter does not wor
 the Envoy logs from the ingress gateway with this command:
 
 ```shell
-kubectl logs -l app=istio-ingressgateway -n istio-system
+kubectl logs -l app=istio-ingressgateway -n istio-system --tail 100
 ```
 
+To continuously follow the live log, replace `--tail 100` with `-f`:
+
+```shell
+kubectl logs -l app=istio-ingressgateway -n istio-system -f
+```
+
+It probably won't yield much useful information, but you can bump the logging detail by first finding the name of the 
+currently active ingress pod and then setting the `debug` log level as follows ...
+
+1. Find the ingress pod name with the `istioctl proxy-status` command:
+   ```shell
+   $ istioctl proxy-status
+   NAME                                                   CLUSTER        CDS    ...
+   authtest-68fb855b64-gtsjm.authtest                     Kubernetes     SYNCED ...
+   istio-egressgateway-55d6d944d7-6txh5.istio-system      Kubernetes     SYNCED ...
+   istio-ingressgateway-7968d6d777-26xll.istio-system     Kubernetes     SYNCED ...
+   login-67b884b995-9c84t.authtest                        Kubernetes     SYNCED ...
+   ```
+   What you want to pick up is the `istio-ingressgateway-7968d6d777-26xll` value where the `7968d6d777-26xll` portion
+   will be unique to your immediate context.
+2. Substitute your value in the following to bump the logging level out of the ingress gateway up:
+   ```shell
+   istioctl proxy-config log istio-ingressgateway-7968d6d777-26xll -n istio-system --level debug
+   ```
+   
+To revert, repeat the `istioctl proxy-config log` command but with the level set to `info`.
+
+You can use `trace` in place of `debug` but, be warned, you will get a lot of noise in the log file from all the
+background activity goin on inside Envoy and this can bury the few lines relating to requests that you submit.
