@@ -7,8 +7,12 @@ spec:
   selector:
     matchLabels:
       app: istio-ingressgateway
-  action: CUSTOM
-  provider:
-    name: ext-authz-grpc
+  action: DENY
   rules:
-    - {}
+    - to:
+      - operation:
+          methods: [ "GET" ]
+          paths: [ "/block*" ]
+      - operation:
+          methods: [ "GET" ]
+          paths: [ "/naff*" ]
