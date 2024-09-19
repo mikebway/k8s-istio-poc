@@ -2,8 +2,11 @@
 
 ## Objective
 
-Demonstrate how Istio can be deployed on top of Minikube to manage path routing for a trivial two
-service web application.
+Demonstrate how Istio can be deployed on top of Minikube to:
+
+1. Manage path routing for a trivial two service web application
+2. Demonstrate the configuration of the Istio ingress gateway to utilize an [Envoy external authorization filter](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/ext_authz_filter)
+   to evaluate requests and modify both request and response headers. 
 
 Login and logout is crudely illustrated by the creation and removal of a session cookie containing the username.
 This is clearly not a secure pattern; do not use it for anything more than demonstration purposes.
@@ -22,13 +25,14 @@ to configure Kubernetes and Istio was achieved one small step at a time.
 3. [Build and deploy the login service](svc-login.md)
 4. [Configure Istio ingress](istio.md)
 5. [Configure Istio service mesh](mesh.md)
-6. [Configure Istio visualization](visualize.md)
+6. [Configure Istio visualization](visualize.md)<p>
+   **Optional:**
 7. [Build and deploy the ingress authorization filter](svc-extauth.md)
 8. [Configure the ingress authorization policy](authz-policy.md)
 
-## Testing
+## Testing without the authorization filter
 
-After completing installation and configurationyou should be able to:
+After completing installation and configuration through step 6 you should be able to:
 
 1. Point a browser to http://localhost and see a simple text response that looks something like this, echoing the `/`
    path of your request and a count 1 times that the [authtest](../authtest) service has responded to a request.
@@ -96,6 +100,27 @@ After completing installation and configurationyou should be able to:
    ```
 6. Returning to any non `/login` or `/logout` path will again display the [authtest](../authtest)
    response but with the session cookie removed or at least emptied (the behavior depends on the browser type used).
+
+## Testing with the authorization filter
+
+If the installation and configuration is completed through stages 7 and 8, then two addition headers will be found in 
+the http://localhost/whatever echo text: This shall contain a JWT as a bearer token. If the JWT is pasted into 
+
+* `X-Extauth-Was-Her` containing the text `blah, blah, blah`
+* `X-Extauth-Authorization` containing a JWT bearer token
+
+Pasting the JWT text from the `X-Extauth-Authorization` into the JWT debugger form at https://jwt.io, the payload will 
+be seen to contain the username copied from the session cookie. The payload portion of the JWT will look something like 
+this after visiting http://localhost/login?user=micky-mouse:
+
+```json
+{
+  "exp": 1726777195,
+  "iat": 1726777165,
+  "nbf": 1726777165,
+  "sub": "micky-mouse"
+}
+```
 
 ## Visualizing the service mesh
 
