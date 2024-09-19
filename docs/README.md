@@ -68,6 +68,9 @@ After completing installation and configuration through step 6 you should be abl
    X-Forwarded-Proto: [http]
    X-Request-Id: [90ee77dd-0395-42be-8148-bcc766f0f246]
    ```
+   In addition, an `authtest-request` cookie will be set, containing the path requested and the count of requests
+   handled. 
+   
 2. Repeating with different URL paths (other than `/login` and `/logout`) will show the `Path:` value changing the
    to match and the `Count:` value increasing, i.e. the count of times that the [authtest](../authtest) service
    has responded to a request.
@@ -77,23 +80,9 @@ After completing installation and configuration through step 6 you should be abl
    To login, add a user=username query parameter to this ULR path
    ```
    
-4. Going to http://localhost/login?user=micky-mouse will create a session cookie containing that name and
-   redirect to http://localhost/dashboard. You should now see the session cookie value in the [authtest](../authtest)
-   response.
-   ```text
-   Path:		"/dashboard"
-   Count:		5
+4. Going to http://localhost/login?user=micky-mouse will create a `session` cookie containing that name and
+   redirect to http://localhost/dashboard.
    
-   HEADERS (24)
-   =======
-   
-   Accept: [text/html,application/xhtml+xml,application/xml;q=0.9,image...
-   Accept-Encoding: [gzip, deflate, br, zstd]
-   Accept-Language: [en-US,en;q=0.9]
-   Cookie: [session=micky-mouse]
-   Sec-Ch-Ua: ["Chromium";v="128", "Not;A=Brand";v="24", "Google Chrome...
-   ... etc ...
-   ```
 5. Going to http://localhost/logout will reset the session cookie and, in effect, "log you out," and display: 
    ```text
    user micky-mouse has been logged out
@@ -121,6 +110,13 @@ this after visiting http://localhost/login?user=micky-mouse:
   "sub": "micky-mouse"
 }
 ```
+
+The `X-Extauth-Was-Her` and `X-Extauth-Authorization` headers are set on the inbound request that ingress will
+forward on to the the [`authtest`](../authtest) and [`login`](../login) services. These headers will not be present 
+on the response back to the browser. 
+
+An `extauth` cookie will be sent back to the browser, containing the total count of requests that the [`extauth`](../extauth)
+filter has approved.
 
 ## Visualizing the service mesh
 

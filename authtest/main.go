@@ -7,6 +7,11 @@ import (
 	"sort"
 )
 
+const (
+	// cookieName is, surprise, the name of a session cookie that this service populates
+	cookieName = "authtest-request"
+)
+
 var (
 	// requestCount tracks the number of requests received
 	requestCount int
@@ -36,6 +41,9 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 	// Log the URL that we have been asked for etc
 	log.Printf("handling request = %s, request count = %d\n", r.URL.Path, requestCount)
 
+	// Add a cookie containing the path and request count
+	setCookie(w, r.URL.Path, requestCount)
+
 	// Dump some text onto the response
 	_, _ = fmt.Fprintf(w, "Path:\t\t%q\n", r.URL.Path)
 	_, _ = fmt.Fprintf(w, "Count:\t\t%d\n", requestCount)
@@ -56,6 +64,22 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 	for _, name := range names {
 		_, _ = fmt.Fprintf(w, "%v: %v\n", name, r.Header[name])
 	}
+}
+
+// setCookie adds an
+func setCookie(w http.ResponseWriter, path string, count int) {
+
+	// Build the cookie (its a session cookie with no expiration or max age
+	cookie := &http.Cookie{
+		Value:    fmt.Sprintf("last-path=%s count=%d", path, requestCount),
+		Name:     cookieName,
+		Path:     "/",
+		HttpOnly: true,
+		SameSite: http.SameSiteStrictMode,
+	}
+
+	// Set the cookie in the response
+	http.SetCookie(w, cookie)
 }
 
 // handleFavicon is the HTTP request handler for "/favicon.ico" requests: 404 NOT FOUND it!

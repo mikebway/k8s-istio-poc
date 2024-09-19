@@ -16,6 +16,11 @@ import (
 	"github.com/mikebway/envoy-auth-poc/extauth/userjwt"
 )
 
+var (
+	// approvalCount tracks the number of requests that were approved
+	approvalCount int
+)
+
 // AuthorizationServer is the struct definition that acts as the Envoy external authorization service class definition.
 //
 // When we have values that we need to share across invocations to an instance of the service but not more
@@ -40,6 +45,9 @@ func denied(code int32, body string) *auth.CheckResponse {
 // allowed is a shorthand function for generating a success response to Envoy, let this request go through
 func allowed(authHeader *core.HeaderValue) *auth.CheckResponse {
 
+	// Bump the count of requests that have been allowed through
+	approvalCount++
+
 	// Start a slice of header with the header that we always set
 	headers := []*core.HeaderValueOption{
 		{
@@ -57,12 +65,23 @@ func allowed(authHeader *core.HeaderValue) *auth.CheckResponse {
 		})
 	}
 
+	// Start a second slice of headers to be included in the response
+	responseHeaders := []*core.HeaderValueOption{
+		{
+			Header: &core.HeaderValue{
+				Key:   "set-cookie",
+				Value: fmt.Sprintf("extauth=%d; Path=/; HttpOnly; SameSite=Strict", approvalCount),
+			},
+		},
+	}
+
 	// Construct and return the response with our header(s)
 	return &auth.CheckResponse{
 		Status: &status.Status{Code: int32(codes.OK)},
 		HttpResponse: &auth.CheckResponse_OkResponse{
 			OkResponse: &auth.OkHttpResponse{
-				Headers: headers,
+				Headers:              headers,
+				ResponseHeadersToAdd: responseHeaders,
 			},
 		},
 	}

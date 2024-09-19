@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"time"
 )
 
 const (
@@ -80,7 +79,7 @@ func handleLogout(w http.ResponseWriter, r *http.Request) {
 		// We have a session cookie, instruct the browser to remove it by setting its maximum age to 0
 		user := cookie.Value
 		cookie := buildSessionCookie("")
-		cookie.Expires = time.Date(1970, 0, 0, 0, 0, 0, 0, time.UTC)
+		cookie.MaxAge = -1 // Destroy immediately
 		http.SetCookie(w, cookie)
 		msg := fmt.Sprintf("user %s has been logged out\n", user)
 		log.Print(msg)
@@ -92,15 +91,13 @@ func handleLogout(w http.ResponseWriter, r *http.Request) {
 // given string value.
 func buildSessionCookie(value string) *http.Cookie {
 
-	// These cookies are implicitly session cookies because no expiration time is set.
+	// This cookies is implicitly a session cookie because no expiration time or max age is set.
 	return &http.Cookie{
 		Value:    value,
 		Name:     sessionCookieName,
 		Path:     "/",
-		Expires:  time.Now().Add(1 * time.Hour),
 		HttpOnly: true,
 		SameSite: http.SameSiteStrictMode,
-		MaxAge:   3600,
 	}
 }
 
