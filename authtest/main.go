@@ -45,6 +45,7 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 	setCookie(w, r.URL.Path, requestCount)
 
 	// Dump some text onto the response
+	_, _ = fmt.Fprintf(w, "Host:\t\t%q\n", r.Host)
 	_, _ = fmt.Fprintf(w, "Path:\t\t%q\n", r.URL.Path)
 	_, _ = fmt.Fprintf(w, "Count:\t\t%d\n", requestCount)
 
