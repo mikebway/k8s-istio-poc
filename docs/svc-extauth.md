@@ -26,7 +26,7 @@ of the Minikube cluster and have the cluster started.
 
 ## Build and manage with `make`
 
-**IMPORTANT:** The following assumes that your current working directory is the [`k8s-istio-poc/login`](../login)
+**IMPORTANT:** The following assumes that your current working directory is the [`k8s-istio-poc/extauth`](../login)
 directory.
 
 The easiest way to build, start and manage the `login` service is using `make`. Running `make` without any
