@@ -30,11 +30,50 @@ to configure Kubernetes and Istio was achieved one small step at a time.
 7. [Build and deploy the ingress authorization filter](svc-extauth.md)
 8. [Configure the ingress authorization policy](authz-policy.md)
 
+## Trouble shooting
+
+To follow the Istio ingress gateway access logs, first find the full name of the currently active ingress gateway pod
+as follows:
+
+1. List the pods running in the `istio-system` namespace with this command:
+   ```shell
+   kubectl get pods --namespace istio-system
+   ```
+   yielding something like this:
+   ```text
+   NAME                                    READY   STATUS    RESTARTS       AGE
+   istio-egressgateway-55d6d944d7-6txh5    1/1     Running   8 (22h ago)    15d
+   istio-ingressgateway-7968d6d777-26xll   1/1     Running   8 (22h ago)    15d
+   istiod-5cc65d99d5-s2rdf                 1/1     Running   8 (22h ago)    15d
+   kiali-65c46f9d98-brd54                  1/1     Running   19 (22h ago)   15d
+   prometheus-7979bfd58c-8gk4x             2/2     Running   19 (22h ago)   15d
+   ```
+2. Copy and paste the full name of the `istio-ingressgateway` pod to replace `istio-ingressgateway-7968d6d777-26xll` 
+   in the following command:
+   ```shell
+   kubectl logs istio-ingressgateway-7968d6d777-26xll --namespace istio-system -f
+   ```
+   Drop the `-f` if you just want to view a snapshot of the most recent logs. 
+
+
 ## Testing without the authorization filter
 
 After completing installation and configuration through step 6 you should be able to:
 
-1. Point a browser to http://localhost and see a simple text response that looks something like this, echoing the `/`
+1. Start a tunnel to connect localhost port 80 to the cluster ingress gateway (if you have not already done this).
+   Doing so will block in that shell until you Ctrl-C to quit it.
+   ```shell
+   minikube tunnel
+   ```
+   If you get an error starting the tunnel to the effect `... another tunnel is already running ...` when you
+   don't have the tunnel in another shell window, delete the local file found at:
+  ```shell
+  rem .minikube/profiles/minikube/.tunnel_lock
+  ```
+   If you close a shell window without Ctrl-C shutting down an open tunnel, the lock file can be left in place even
+   though the tunnel is not running.
+   
+2. Point a browser to http://localhost and see a simple text response that looks something like this, echoing the `/`
    path of your request and a count 1 times that the [authtest](../authtest) service has responded to a request.
    ```text
    Path:		"/"
@@ -71,23 +110,23 @@ After completing installation and configuration through step 6 you should be abl
    In addition, an `authtest-request` cookie will be set, containing the path requested and the count of requests
    handled. 
    
-2. Repeating with different URL paths (other than `/login` and `/logout`) will show the `Path:` value changing the
+3. Repeating with different URL paths (other than `/login` and `/logout`) will show the `Path:` value changing the
    to match and the `Count:` value increasing, i.e. the count of times that the [authtest](../authtest) service
    has responded to a request.
    
-3. Going to http://localhost/login will prompt you to add a `user=` query parameter:
+4. Going to http://localhost/login will prompt you to add a `user=` query parameter:
    ```text
    To login, add a user=username query parameter to this ULR path
    ```
    
-4. Going to http://localhost/login?user=micky-mouse will create a `session` cookie containing that name and
+5. Going to http://localhost/login?user=micky-mouse will create a `session` cookie containing that name and
    redirect to http://localhost/dashboard.
    
-5. Going to http://localhost/logout will reset the session cookie and, in effect, "log you out," and display: 
+6. Going to http://localhost/logout will reset the session cookie and, in effect, "log you out," and display: 
    ```text
    user micky-mouse has been logged out
    ```
-6. Returning to any non `/login` or `/logout` path will again display the [authtest](../authtest)
+7. Returning to any non `/login` or `/logout` path will again display the [authtest](../authtest)
    response but with the session cookie removed or at least emptied (the behavior depends on the browser type used).
 
 ## Testing with the authorization filter
