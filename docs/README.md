@@ -18,6 +18,55 @@ time with smaller, single purpose YAML files and single `kubectl`/`istioctl` com
 If it looks like this project was assembled brick-by-brick, that's because it's true; learning how
 to configure Kubernetes and Istio was achieved one small step at a time.
 
+## `something.local` vs `localhost`
+
+The Istio ingress gateway cannot support routing to overlapping wildcard host domains. In other words, it will happily 
+support `*.example.com` and `*.other.com`, routing requests for those host name families to services running in
+two respective Kubernetes namespaces, but it cannot separately route to `*` and `*.example.com` where 
+`*.example.com` is a subset of `*`. 
+
+It is also illegal to specify host name patterns with only a single element such as `localhost`. The only way for
+the Istio ingress gateway to support routing to `localhost` is to define a gateway for `*`, i.e., for all hosts. 
+And if you do that then you cannot configure a second gateway since `*` is the superset of all domain name patterns. 
+
+### Knative Serving of public services
+
+Running Knative Serving to host on-demand loading of publicly accessible services alongside non-Knative services in 
+the same cluster requires multiple Istio ingress gateway configurations, at least one for Knative services and at least
+one for non-Knative services. 
+
+Since this guide is intended to serve as a foundation for the follow up [Running Knative on Minikube locally](https://github.com/mikebway/knative-poc) 
+guide, we cannot use a `*` wildcard host specification in the Istio [`gateway.yaml`](../istio/gateway.yaml) configuration.
+
+If you are not going to be installing [Knative](https://knative.dev/docs/) into your Minikube cluster, i.e. you
+are not going to add [Running Knative on Minikube locally](https://github.com/mikebway/knative-poc) after you
+complete this guide, then you can alter the `hosts` entry of [`gateway.yaml`](../istio/gateway.yaml) to allow the 
+Istio ingress gateway to route for any target host name including `localhost` as follows:
+
+Replace this:
+
+```text
+      hosts:
+        - "*.local"
+```
+
+with this:
+
+```text
+      hosts:
+        - "*"
+```
+
+### Finding your Mac's `.local` name
+
+If you are using a Mac and sticking with the provided [`gateway.yaml`](../istio/gateway.yaml) file for `*.local` hosts
+you will need to find out what your Mac's local DNS name is. You can do that by looking at the bottom of the **Sharing**
+panel of your **System settings**:
+
+![System settings - Sharing](Mac-SystemSettings-Sharing.png)
+
+In this example, the Mac's local DNS host name is `Studio-2022.local`; case does not matter.
+
 ## Installation and configuration
 
 1. [Minikube installation and basic configuration](Install.md)
@@ -73,7 +122,7 @@ After completing installation and configuration through step 6 you should be abl
    If you close a shell window without Ctrl-C shutting down an open tunnel, the lock file can be left in place even
    though the tunnel is not running.
    
-2. Point a browser to http://localhost and see a simple text response that looks something like this, echoing the `/`
+2. Point a browser to http://<your-system-name>.local and see a simple text response that looks something like this, echoing the `/`
    path of your request and a count 1 times that the [authtest](../authtest) service has responded to a request.
    ```text
    Path:		"/"
@@ -114,15 +163,15 @@ After completing installation and configuration through step 6 you should be abl
    to match and the `Count:` value increasing, i.e. the count of times that the [authtest](../authtest) service
    has responded to a request.
    
-4. Going to http://localhost/login will prompt you to add a `user=` query parameter:
+4. Going to http://<your-system-name>.local/login will prompt you to add a `user=` query parameter:
    ```text
    To login, add a user=username query parameter to this ULR path
    ```
    
-5. Going to http://localhost/login?user=micky-mouse will create a `session` cookie containing that name and
-   redirect to http://localhost/dashboard.
+5. Going to http://<your-system-name>.local/login?user=micky-mouse will create a `session` cookie containing that name and
+   redirect to http://<your-system-name>.local/dashboard.
    
-6. Going to http://localhost/logout will reset the session cookie and, in effect, "log you out," and display: 
+6. Going to http://<your-system-name>.local/logout will reset the session cookie and, in effect, "log you out," and display: 
    ```text
    user micky-mouse has been logged out
    ```
@@ -132,14 +181,14 @@ After completing installation and configuration through step 6 you should be abl
 ## Testing with the authorization filter
 
 If the installation and configuration is completed through stages 7 and 8, then two additional headers will be found in 
-the http://localhost/whatever echo text: This shall contain a JWT as a bearer token. If the JWT is pasted into 
+the http://<your-system-name>.local/whatever echo text: This shall contain a JWT as a bearer token. If the JWT is pasted into 
 
 * `X-Extauth-Was-Her` containing the text `blah, blah, blah`
 * `X-Extauth-Authorization` containing a JWT bearer token
 
 Pasting the JWT text from the `X-Extauth-Authorization` into the JWT debugger form at https://jwt.io, the payload will 
 be seen to contain the username copied from the session cookie. The payload portion of the JWT will look something like 
-this after visiting http://localhost/login?user=micky-mouse:
+this after visiting http://<your-system-name>.local/login?user=micky-mouse:
 
 ```json
 {
