@@ -95,7 +95,7 @@ We don't need the `hello-minikube` service anymore so lets get rid of it ...
   ```shell
   kubectl delete deployment hello-minikube
   ```
-  ```
+  
 
 
 

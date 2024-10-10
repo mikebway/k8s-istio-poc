@@ -70,7 +70,7 @@ In this example, the Mac's local DNS host name is `Studio-2022.local`; case does
 ## Installation and configuration
 
 1. [Minikube installation and basic configuration](Install.md)
-2. [Build and deploy the authtest service](svc-authtest)
+2. [Build and deploy the authtest service](svc-authtest.md)
 3. [Build and deploy the login service](svc-login.md)
 4. [Configure Istio ingress](istio.md)
 5. [Configure Istio service mesh](mesh.md)
