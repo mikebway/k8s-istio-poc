@@ -181,10 +181,13 @@ After completing installation and configuration through step 6 you should be abl
 ## Testing with the authorization filter
 
 If the installation and configuration is completed through stages 7 and 8, then two additional headers will be found in 
-the http://<your-system-name>.local/whatever echo text: This shall contain a JWT as a bearer token. If the JWT is pasted into 
+the http://<your-system-name>.local/whatever echo text:  
 
-* `X-Extauth-Was-Her` containing the text `blah, blah, blah`
+* `X-Extauth-Was-Here` containing the text `blah, blah, blah`
 * `X-Extauth-Authorization` containing a JWT bearer token
+
+**NOTE:** The `extauth` ingress filter is configured to allow home page requests, i.e., to the `/` path to pass through
+without setting these headers. The headers will only be set on non-root URL paths.
 
 Pasting the JWT text from the `X-Extauth-Authorization` into the JWT debugger form at https://jwt.io, the payload will 
 be seen to contain the username copied from the session cookie. The payload portion of the JWT will look something like 
@@ -199,7 +202,7 @@ this after visiting http://<your-system-name>.local/login?user=micky-mouse:
 }
 ```
 
-The `X-Extauth-Was-Her` and `X-Extauth-Authorization` headers are set on the inbound request that ingress will
+The `X-Extauth-Was-Here` and `X-Extauth-Authorization` headers are set on the inbound request that ingress will
 forward on to the the [`authtest`](../authtest) and [`login`](../login) services. These headers will not be present 
 on the response back to the browser. 
 

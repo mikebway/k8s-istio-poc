@@ -34,13 +34,16 @@ istioctl dashboard kiali
 ```
 
 There will not be much to see if you have not sent any requests into the cluster recently, so hit a few URLs across
-the [`authtest`](../authtest) and [`login`](../login) services:
+the [`authtest`](../authtest) and [`login`](../login) services, replacing the `<your-host>` with the hostname of your Mac.
 
-* http://localhost/blah-blah-blah
-* http://logout
-* [http://login?user=donald-duck](http://login?user=donald-duck)
+* http://<your-host>.local/blah-blah-blah
+* http://<your-host>.local/logout
+* http://<your-host>.local/login?user=donald-duck
 
-Then look at the various traffic graphs that you can explore from here: http://localhost:20001/kiali/console/graph/namespaces
+Then look at the various traffic graphs that you can explore from here (don't forget to specify the `authtest` 
+namespace, or all namespaces): 
+
+* http://localhost:20001/kiali/console/overview?duration=60&refresh=60000
 
 If nothing shows up, make sure that you **Select all** check in the Namespace dropdown.
 

@@ -44,6 +44,8 @@ kubectl delete -f authtest/deployment.yaml --namespace authtest
 kubectl delete -f login/service.yaml --namespace authtest
 kubectl delete -f login/deployment.yaml --namespace authtest
 
+# ... allow a little time for the pods to shut down ...
+
 # Redeploy and start the authtest and login services 
 kubectl create -f authtest/deployment.yaml --namespace authtest
 kubectl apply -f authtest/service.yaml --namespace authtest
@@ -63,8 +65,8 @@ You should see something like this where each pod expects to have two running co
 
 ```text
 NAME                        READY   STATUS    RESTARTS   AGE
-authtest-68fb855b64-gtsjm   1/1     Running   0          59s
-login-67b884b995-9c84t      1/1     Running   0          35s
+authtest-5fd9dd7d5c-qzf4s   2/2     Running   0          75s
+login-884d47dd-6j22x        2/2     Running   0          19s
 ```
 
 Meanwhile, running this:
