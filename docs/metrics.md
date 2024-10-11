@@ -24,3 +24,9 @@ minikube   435m         7%     2737Mi          22%
 
 The Kubernetes web dashboard will also display CPU and memory graphics for both nodes and pods after metrics collection
 has been installed.
+
+## Troubleshooting
+
+If `kubectl top nodes` displays `error: Metrics API not available`, follow the instructions in the 
+[Fix “error: Metrics API not available” in Kubernetes](https://medium.com/@cloudspinx/fix-error-metrics-api-not-available-in-kubernetes-aa10766e1c2f)
+article on [Medium](https://medium.com).
