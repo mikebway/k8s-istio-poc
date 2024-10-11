@@ -76,8 +76,9 @@ In this example, the Mac's local DNS host name is `Studio-2022.local`; case does
 5. [Configure Istio service mesh](mesh.md)
 6. [Configure Istio visualization](visualize.md)<p>
    **Optional:**
-7. [Build and deploy the ingress authorization filter](svc-extauth.md)
-8. [Configure the ingress authorization policy](authz-policy.md)
+7. [Enable metrics collection](metrics.md)
+8. [Build and deploy the ingress authorization filter](svc-extauth.md)
+9. [Configure the ingress authorization policy](authz-policy.md)
 
 ## Trouble shooting
 
