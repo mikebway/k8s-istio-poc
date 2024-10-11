@@ -4,6 +4,19 @@
 assume that your working directory is the `k8s-istio-poc` project root directory where they reference YAML file 
 paths.
 
+## Prerequisites
+
+While this project can be used as a rough map for Windows and Linux installation, it's primary audience is
+Mac users. As a Mac user, it is assumed that you have [Homebrew](https://brew.sh/) installed.
+
+Again, as a Mac user you are almost certainly using Zsh as your command line shell. If so, and you have not done so
+already, you might want to add this to your `.zshrc` file (or just run it on your command line as a one off):
+
+```shell
+# Ignore # comment lines in interactive command pastes
+setopt interactivecomments
+```
+
 ## Installation
 
 1. Install Colima and Docker via Brew
