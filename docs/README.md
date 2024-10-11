@@ -163,15 +163,15 @@ After completing installation and configuration through step 6 you should be abl
    to match and the `Count:` value increasing, i.e. the count of times that the [authtest](../authtest) service
    has responded to a request.
    
-4. Going to http://<your-system-name>.local/login will prompt you to add a `user=` query parameter:
+4. Going to `http://<your-system-name>.local/login` will prompt you to add a `user=` query parameter:
    ```text
    To login, add a user=username query parameter to this ULR path
    ```
    
-5. Going to http://<your-system-name>.local/login?user=micky-mouse will create a `session` cookie containing that name and
+5. Going to `http://<your-system-name>.local/login?user=micky-mouse` will create a `session` cookie containing that name and
    redirect to http://<your-system-name>.local/dashboard.
    
-6. Going to http://<your-system-name>.local/logout will reset the session cookie and, in effect, "log you out," and display: 
+6. Going to `http://<your-system-name>.local/logout` will reset the session cookie and, in effect, "log you out," and display: 
    ```text
    user micky-mouse has been logged out
    ```
