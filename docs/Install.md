@@ -26,7 +26,7 @@ setopt interactivecomments
    
 2. Start Colima; adjust CPU and memory parameters for best use of your Mac’s resources
    ```shell
-   colima start -c6 -m12 --edit
+   colima start -c6 -m8 --edit
    ```
 
 3. Configure Docker context to point at Colima
@@ -42,7 +42,7 @@ setopt interactivecomments
    # Adjust these values to be equal to or less than you used for 
    # Colima above
    minikube config set cpus 6
-   minikube config set memory 12g
+   minikube config set memory 8g
    ```
 5. Start Minikube
    ```shell

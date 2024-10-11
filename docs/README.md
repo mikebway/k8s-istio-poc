@@ -233,7 +233,7 @@ The next time you start Minikube, the services that you deployed will be brought
 have to go through the installation and deployment steps again. For example:
 
 ```shell
-colima start -c6 -m12 
+colima start -c6 -8 
 
 minikube start
 

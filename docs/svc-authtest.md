@@ -24,7 +24,7 @@ Minikube must have been started, which will be the case if you have just complet
 do it, adjusting the Colima memory and CPU count as appropriate for your system:
 
 ```shell
-colima start -c6 -m12 --edit
+colima start -c6 -8 --edit
 minkube start
 ```
 
