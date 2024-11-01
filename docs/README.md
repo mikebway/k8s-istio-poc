@@ -18,7 +18,7 @@ time with smaller, single purpose YAML files and single `kubectl`/`istioctl` com
 If it looks like this project was assembled brick-by-brick, that's because it's true; learning how
 to configure Kubernetes and Istio was achieved one small step at a time.
 
-## `something.local` vs `localhost`
+## `example.com` vs `localhost`
 
 The Istio ingress gateway cannot support routing to overlapping wildcard host domains. In other words, it will happily 
 support `*.example.com` and `*.other.com`, routing requests for those host name families to services running in
@@ -31,7 +31,7 @@ And if you do that then you cannot configure a second gateway since `*` is the s
 
 ### Knative Serving of public services
 
-Running Knative Serving to host on-demand loading of publicly accessible services alongside non-Knative services in 
+Running Knative Serving to host on-demand loading of externally accessible services alongside non-Knative services in 
 the same cluster requires multiple Istio ingress gateway configurations, at least one for Knative services and at least
 one for non-Knative services. 
 
@@ -47,7 +47,7 @@ Replace this:
 
 ```text
       hosts:
-        - "*.local"
+        - "example.com
 ```
 
 with this:
@@ -57,15 +57,26 @@ with this:
         - "*"
 ```
 
-### Finding your Mac's `.local` name
+### Browsing to http://example.com
 
-If you are using a Mac and sticking with the provided [`gateway.yaml`](../istio/gateway.yaml) file for `*.local` hosts
-you will need to find out what your Mac's local DNS name is. You can do that by looking at the bottom of the **Sharing**
-panel of your **System settings**:
+If you don't change the [`gateway.yaml`](../istio/gateway.yaml) to allow http://localhost access to your Minikube cluster, you will
+need to be able to point your browser to `http://example.com` to access the services running in the cluster.
 
-![System settings - Sharing](Mac-SystemSettings-Sharing.png)
+The simplest way to do this is to use Firefox or Safari as your browser and add `example.com` to your `/etc/hosts` file
+as follows:
 
-In this example, the Mac's local DNS host name is `Studio-2022.local`; case does not matter.
+```text
+127.0.0.1       example.com
+```
+
+Unfortunately, Chrome and Edge ignore the contents of the `/etc/hosts` file, bypassing the operating system for their
+DNS resolution. If you insist on using Chrome or Edge, you will need to use a browser extension to override the `Host`
+header that your browser sends to the server. The [ModHeader](https://modheader.com/modheader) Chrome browser extension
+is one such tool. 
+
+If you go this route, i.e., using Chrome or Edge, you will need to replace http://example.com with http://localhost 
+in all of the tests described below and have the header modification extension set the `Host` header to `example.com`.
+Really, it's much easier to use Firefox or Safari. :-)
 
 ## Installation and configuration
 
@@ -75,7 +86,6 @@ In this example, the Mac's local DNS host name is `Studio-2022.local`; case does
 4. [Configure Istio ingress](istio.md)
 5. [Configure Istio service mesh](mesh.md)
 6. [Configure Istio visualization](visualize.md)<p>
-   **Optional:**
 7. [Enable metrics collection](metrics.md)
 8. [Build and deploy the ingress authorization filter](svc-extauth.md)
 9. [Configure the ingress authorization policy](authz-policy.md)
@@ -123,7 +133,7 @@ After completing installation and configuration through step 6 you should be abl
    If you close a shell window without Ctrl-C shutting down an open tunnel, the lock file can be left in place even
    though the tunnel is not running.
    
-2. Point a browser to http://<your-system-name>.local and see a simple text response that looks something like this, echoing the `/`
+2. Point a browser to http://example.com and see a simple text response that looks something like this, echoing the `/`
    path of your request and a count 1 times that the [authtest](../authtest) service has responded to a request.
    ```text
    Path:		"/"
@@ -164,15 +174,15 @@ After completing installation and configuration through step 6 you should be abl
    to match and the `Count:` value increasing, i.e. the count of times that the [authtest](../authtest) service
    has responded to a request.
    
-4. Going to `http://<your-system-name>.local/login` will prompt you to add a `user=` query parameter:
+4. Going to `http://example.com/login` will prompt you to add a `user=` query parameter:
    ```text
    To login, add a user=username query parameter to this ULR path
    ```
    
-5. Going to `http://<your-system-name>.local/login?user=micky-mouse` will create a `session` cookie containing that name and
-   redirect to http://<your-system-name>.local/dashboard.
+5. Going to `http://example.com/login?user=micky-mouse` will create a `session` cookie containing that name and
+   redirect to http://example.com/dashboard.
    
-6. Going to `http://<your-system-name>.local/logout` will reset the session cookie and, in effect, "log you out," and display: 
+6. Going to `http://example.com/logout` will reset the session cookie and, in effect, "log you out," and display: 
    ```text
    user micky-mouse has been logged out
    ```
@@ -182,7 +192,7 @@ After completing installation and configuration through step 6 you should be abl
 ## Testing with the authorization filter
 
 If the installation and configuration is completed through stages 7 and 8, then two additional headers will be found in 
-the http://<your-system-name>.local/whatever echo text:  
+the http://example.com/whatever echo text:  
 
 * `X-Extauth-Was-Here` containing the text `blah, blah, blah`
 * `X-Extauth-Authorization` containing a JWT bearer token
@@ -192,7 +202,7 @@ without setting these headers. The headers will only be set on non-root URL path
 
 Pasting the JWT text from the `X-Extauth-Authorization` into the JWT debugger form at https://jwt.io, the payload will 
 be seen to contain the username copied from the session cookie. The payload portion of the JWT will look something like 
-this after visiting http://<your-system-name>.local/login?user=micky-mouse:
+this after visiting http://example.com/login?user=micky-mouse:
 
 ```json
 {

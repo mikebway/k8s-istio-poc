@@ -34,11 +34,11 @@ istioctl dashboard kiali
 ```
 
 There will not be much to see if you have not sent any requests into the cluster recently, so hit a few URLs across
-the [`authtest`](../authtest) and [`login`](../login) services, replacing the `<your-host>` with the hostname of your Mac.
+the [`authtest`](../authtest) and [`login`](../login) services:
 
-* http://<your-host>.local/blah-blah-blah
-* http://<your-host>.local/logout
-* http://<your-host>.local/login?user=donald-duck
+* http://example.com/blah-blah-blah
+* http://example.com/logout
+* http://example.com/login?user=donald-duck
 
 Then look at the various traffic graphs that you can explore from here (don't forget to specify the `authtest` 
 namespace, or all namespaces): 
